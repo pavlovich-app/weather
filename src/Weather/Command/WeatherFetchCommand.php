@@ -32,6 +32,7 @@ class WeatherFetchCommand extends Command
      * @param InputInterface $input
      * @param OutputInterface $output
      * @return int
+     * @throws \Psr\Cache\InvalidArgumentException
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
