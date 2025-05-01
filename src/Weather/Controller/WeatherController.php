@@ -26,7 +26,6 @@ class WeatherController extends AbstractController
 
         return $this->render('weather/default.html.twig', [
             'weather' => $weather,
-            'city' => $city
         ]);
     }
 }
