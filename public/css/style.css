@@ -136,6 +136,15 @@ body {
     border-radius: 10px;
 }
 
+.today-info a {
+    display: block;
+    margin-bottom: 18px;
+    color: #ffffff;
+    font-size: 22px;
+    text-decoration: none;
+    font-weight: bold;
+}
+
 .today-info>div:not(:last-child) {
     margin: 0 0 10px 0;
 }

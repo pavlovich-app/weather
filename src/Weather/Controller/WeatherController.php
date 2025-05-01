@@ -1,6 +1,7 @@
 <?php
 namespace App\Weather\Controller;
 
+use App\Weather\DTO\WeatherDTO;
 use App\Weather\Service\WeatherService;
 use App\Weather\Source\OpenWeatherMapSource;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -9,13 +10,11 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class WeatherController extends AbstractController
 {
-    #[Route('/', name: 'homepage')]
-    public function index(WeatherService $weatherService, OpenWeatherMapSource $source): Response
+    #[Route('/', name: 'index')]
+    public function index(): Response
     {
-        $cities = [];
-
-        return $this->render('weather/default.html.twig', [
-            'cities' => $cities
+        return $this->render('weather/index.html.twig', [
+            'cities' => WeatherDTO::AVAILABLE_CITIES
         ]);
     }
 
@@ -24,7 +23,7 @@ class WeatherController extends AbstractController
     {
         $weather = $weatherService->getWeatherForCity($city, $source);
 
-        return $this->render('weather/default.html.twig', [
+        return $this->render('weather/city.html.twig', [
             'weather' => $weather,
         ]);
     }

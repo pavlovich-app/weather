@@ -3,6 +3,8 @@ namespace App\Weather\DTO;
 
 class WeatherDTO
 {
+    const AVAILABLE_CITIES = ['New York', 'Los Angeles', 'Chicago', 'Houston', 'Phoenix', 'Dallas', 'Boston'];
+
     public function __construct(
         public ?string $city = null,
         public ?string $country = null,
