@@ -1,0 +1,19 @@
+<?php
+namespace App\Weather\Source;
+
+use App\Weather\DTO\WeatherDTO;
+
+interface SourceInterface
+{
+    /**
+     * @param string $city
+     * @return WeatherDTO|null
+     */
+    public function getWeather(string $city): ?WeatherDTO;
+
+    /**
+     * @param string $city
+     * @return string]
+     */
+    public function getCacheKey(string $city): string;
+}

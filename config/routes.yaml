@@ -1,0 +1,11 @@
+controllers:
+    resource:
+        path: ../src/Weather/Controller/
+        namespace: App\Weather\Controller
+    type: attribute
+
+api:
+    resource:
+        path: '../src/API/Controller'
+        namespace: App\API\Controller
+    type: attribute
