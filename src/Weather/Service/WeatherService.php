@@ -33,7 +33,11 @@ class WeatherService
      */
     public function getWeatherForCity(string $city, SourceInterface $source): ?WeatherDTO
     {
-        return $this->cache->get($source->getCacheKey($city));
+        $cache = $this->cache->get($source->getCacheKey($city));
+
+        if (empty($cache)) return null;
+        
+        return (new WeatherDTO)->loadAttributes($cache);
     }
 
     /**

@@ -38,13 +38,13 @@ class OpenWeatherMapSource implements SourceInterface
             }
 
             return new WeatherDTO(
-                $weather['location']['name'],
-                $weather['location']['country'],
-                $weather['current']['temp_c'],
-                $weather['current']['condition']['text'],
-                $weather['current']['humidity'],
-                $weather['current']['wind_kph'],
-                $weather['current']['last_updated'],
+                $city,
+                $weather['sys']['country'],
+                $weather['main']['temp'],
+                $weather['weather'][0]['description'],
+                $weather['main']['humidity'],
+                $weather['wind']['speed'],
+                $weather['dt'],
             );
         } catch (\Throwable $e) {
             $this->logger->error('Failed to fetch weather data', ['exception' => $e]);
@@ -58,6 +58,6 @@ class OpenWeatherMapSource implements SourceInterface
      */
     public function getCacheKey(string $city): string
     {
-        return "open_weather_{$city}";
+        return strtolower("open_weather_{$city}");
     }
 }

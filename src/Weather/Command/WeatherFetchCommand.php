@@ -42,10 +42,9 @@ class WeatherFetchCommand extends Command
             return Command::FAILURE;
         }
 
-        $this->weatherService->setWeatherToCache($city, $data);
+        $this->weatherService->setWeatherToCache($this->openWeatherMapSource->getCacheKey($city), $data);
 
-        $output->writeln(sprintf('Weather in %s: %s°C, %s', $city, $data['main']['temp'], $data['weather'][0]['description']));
-
+        $output->writeln("Weather in {$city}: {$data->temperature}°C");
 
         return Command::SUCCESS;
     }

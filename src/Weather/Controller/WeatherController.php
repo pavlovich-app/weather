@@ -19,13 +19,12 @@ class WeatherController extends AbstractController
         ]);
     }
 
-
     #[Route('/{city}', name: 'city')]
     public function city(string $city, WeatherService $weatherService, OpenWeatherMapSource $source): Response
     {
         $weather = $weatherService->getWeatherForCity($city, $source);
 
-        return $this->render('weather/index.html.twig', [
+        return $this->render('weather/default.html.twig', [
             'weather' => $weather,
             'city' => $city
         ]);
