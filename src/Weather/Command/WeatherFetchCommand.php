@@ -1,6 +1,7 @@
 <?php
 namespace App\Weather\Command;
 
+use App\Weather\DTO\WeatherDTO;
 use App\Weather\Service\WeatherService;
 use App\Weather\Source\OpenWeatherMapSource;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -24,7 +25,7 @@ class WeatherFetchCommand extends Command
 
     protected function configure(): void
     {
-        $this->addArgument('city', InputArgument::REQUIRED, 'City to fetch weather for');
+        $this->addArgument('city', InputArgument::OPTIONAL, 'City to fetch weather for');
     }
 
     /**
@@ -34,17 +35,22 @@ class WeatherFetchCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $city = $input->getArgument('city');
-        $data = $this->weatherService->fetchWeatherForCity($city, $this->openWeatherMapSource);
+        $city = $input->getArgument('city') ?? null;
 
-        if (!$data) {
-            $output->writeln('<error>' . 'Cant receive Weather' . '</error>');
-            return Command::FAILURE;
+        $cities = $city ? [$city] : WeatherDTO::AVAILABLE_CITIES;
+
+        foreach ($cities as $city) {
+            $data = $this->weatherService->fetchWeatherForCity($city, $this->openWeatherMapSource);
+
+            if (!$data) {
+                $output->writeln('<error>' . 'Cant receive Weather' . '</error>');
+                return Command::FAILURE;
+            }
+
+            $this->weatherService->setWeatherToCache($this->openWeatherMapSource->getCacheKey($city), $data);
+
+            $output->writeln("Weather in {$city}: {$data->temperature}°C") . PHP_EOL;
         }
-
-        $this->weatherService->setWeatherToCache($this->openWeatherMapSource->getCacheKey($city), $data);
-
-        $output->writeln("Weather in {$city}: {$data->temperature}°C");
 
         return Command::SUCCESS;
     }
