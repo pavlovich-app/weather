@@ -9,6 +9,6 @@ services:
       - .env.dev
     ports:
       - "8000:8000"
-    command: sh -c "php bin/console app:weather:fetch && php -S 0.0.0.0:8000 -t public; tail -f /dev/null"
+    command: sh -c "php /var/www/weather/bin/console app:weather:fetch && php -S 0.0.0.0:8000 -t public"
     environment:
       - OPENWEATHERMAP_API_KEY=${OPENWEATHERMAP_API_KEY}
