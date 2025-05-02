@@ -57,7 +57,7 @@ class WeatherFetchCommand extends Command
 
                 $output->writeln("Weather in {$city}: {$data->temperature}°C") . PHP_EOL;
 
-                $this->logger->info("END Fetching weather for {$city}");
+                $this->logger->info("END Fetching weather for {$city}", $data->toArray());
             }
 
             return Command::SUCCESS;
