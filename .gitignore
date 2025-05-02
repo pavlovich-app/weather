@@ -10,3 +10,7 @@
 ###< symfony/framework-bundle ###
 /.idea
 /docker/volumes
+###> phpunit/phpunit ###
+/phpunit.xml
+/.phpunit.cache/
+###< phpunit/phpunit ###
