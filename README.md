@@ -54,26 +54,22 @@ If no city argument is provided, the command updates all predefined cities.
 
 | Command | Description |
 |--------|-------------|
-| ````BASH docker compose build ```` | Build all services |
-| ````BASH docker compose up -d ```` | Start containers in background |
-| ````BASH docker compose down ```` | Stop and remove containers |
-| ````BASH docker compose exec php bash ```` | Open shell in PHP container |
-| ````BASH docker compose logs -f php ```` | View PHP container logs |
+| ```` docker compose build ```` | Build all services |
+| ```` docker compose up -d ```` | Start containers in background |
+| ```` docker compose down ```` | Stop and remove containers |
+| ```` docker compose exec php bash ```` | Open shell in PHP container |
+| ```` docker compose logs -f php ```` | View PHP container logs |
 
 
 
 
 ## ✅ What is tested
 
-- `fetchWeatherForCity()`  
-  Returns a `WeatherDTO` from a mocked source.
-
-- `getWeatherForCity()`
-    - Returns `null` if there is nothing in the cache.
-    - Returns a `WeatherDTO` if data exists in the cache.
-
-- `setWeatherToCache()`  
-  Verifies that the cache is called with the correct arguments.
+| Command | Description |
+|--------|-------------|
+| ````fetchWeatherForCity() ```` | Returns a `WeatherDTO` from a mocked source |
+| ````getWeatherForCity() ```` | Returns `null` if there is nothing in the cache. Returns a `WeatherDTO` if data exists in the cache. |
+| ````setWeatherToCache() ```` | Verifies that the cache is called with the correct arguments. |
 
 ---
 
@@ -81,3 +77,4 @@ If no city argument is provided, the command updates all predefined cities.
 
 ```bash
 ./vendor/bin/phpunit tests/Service/WeatherServiceTest.php
+````
