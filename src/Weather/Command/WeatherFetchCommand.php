@@ -1,6 +1,7 @@
 <?php
 namespace App\Weather\Command;
 
+use Psr\Log\LoggerInterface;
 use App\Weather\DTO\WeatherDTO;
 use App\Weather\Service\WeatherService;
 use App\Weather\Source\OpenWeatherMapSource;
@@ -18,7 +19,8 @@ class WeatherFetchCommand extends Command
 {
     public function __construct(
         private WeatherService $weatherService,
-        private OpenWeatherMapSource $openWeatherMapSource)
+        private OpenWeatherMapSource $openWeatherMapSource,
+        private LoggerInterface $logger)
     {
         parent::__construct();
     }
@@ -36,23 +38,37 @@ class WeatherFetchCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $city = $input->getArgument('city') ?? null;
+        try {
+            $city = $input->getArgument('city') ?? null;
 
-        $cities = $city ? [$city] : WeatherDTO::AVAILABLE_CITIES;
+            $cities = $city ? [$city] : WeatherDTO::AVAILABLE_CITIES;
 
-        foreach ($cities as $city) {
-            $data = $this->weatherService->fetchWeatherForCity($city, $this->openWeatherMapSource);
+            foreach ($cities as $city) {
+                $this->logger->info("START Fetching weather for {$city}");
 
-            if (!$data) {
-                $output->writeln('<error>' . 'Cant receive Weather' . '</error>');
-                return Command::FAILURE;
+                $data = $this->weatherService->fetchWeatherForCity($city, $this->openWeatherMapSource);
+
+                if (!$data) {
+                    $output->writeln('<error>' . 'Cant receive Weather' . '</error>');
+                    return Command::FAILURE;
+                }
+
+                $this->weatherService->setWeatherToCache($this->openWeatherMapSource->getCacheKey($city), $data);
+
+                $output->writeln("Weather in {$city}: {$data->temperature}°C") . PHP_EOL;
+
+                $this->logger->info("END Fetching weather for {$city}");
             }
 
-            $this->weatherService->setWeatherToCache($this->openWeatherMapSource->getCacheKey($city), $data);
+            return Command::SUCCESS;
 
-            $output->writeln("Weather in {$city}: {$data->temperature}°C") . PHP_EOL;
+        } catch (\Throwable $e) {
+            $output->writeln('<error>Error: ' . $e->getMessage() . '</error>');
+            $this->logger->error('Weather fetch failed', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+            return Command::FAILURE;
         }
-
-        return Command::SUCCESS;
     }
 }

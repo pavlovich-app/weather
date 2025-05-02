@@ -7,6 +7,7 @@ use App\Weather\Source\OpenWeatherMapSource;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class WeatherController extends AbstractController
 {
@@ -21,6 +22,10 @@ class WeatherController extends AbstractController
     #[Route('/{city}', name: 'city')]
     public function city(string $city, WeatherService $weatherService, OpenWeatherMapSource $source): Response
     {
+        if (!in_array($city, WeatherDTO::AVAILABLE_CITIES)) {
+            throw new NotFoundHttpException("Weather for this city not found. This city is unavailable!");
+        }
+
         $weather = $weatherService->getWeatherForCity($city, $source);
 
         return $this->render('weather/city.html.twig', [
