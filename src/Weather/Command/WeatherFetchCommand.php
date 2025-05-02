@@ -4,7 +4,7 @@ namespace App\Weather\Command;
 use Psr\Log\LoggerInterface;
 use App\Weather\DTO\WeatherDTO;
 use App\Weather\Service\WeatherService;
-use App\Weather\Source\OpenWeatherMapSource;
+use App\Weather\Provider\OpenWeatherMapProvider;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -19,7 +19,7 @@ class WeatherFetchCommand extends Command
 {
     public function __construct(
         private WeatherService $weatherService,
-        private OpenWeatherMapSource $openWeatherMapSource,
+        private OpenWeatherMapProvider $openWeatherMapProvider,
         private LoggerInterface $logger)
     {
         parent::__construct();
@@ -46,14 +46,14 @@ class WeatherFetchCommand extends Command
             foreach ($cities as $city) {
                 $this->logger->info("START Fetching weather for {$city}");
 
-                $data = $this->weatherService->fetchWeatherForCity($city, $this->openWeatherMapSource);
+                $data = $this->weatherService->fetchWeatherForCity($city, $this->openWeatherMapProvider);
 
                 if (!$data) {
                     $output->writeln('<error>' . 'Cant receive Weather' . '</error>');
                     return Command::FAILURE;
                 }
 
-                $this->weatherService->setWeatherToCache($this->openWeatherMapSource->getCacheKey($city), $data);
+                $this->weatherService->setWeatherToCache($this->openWeatherMapProvider->getCacheKey($city), $data);
 
                 $output->writeln("Weather in {$city}: {$data->temperature}°C") . PHP_EOL;
 

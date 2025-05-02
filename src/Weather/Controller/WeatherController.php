@@ -3,7 +3,7 @@ namespace App\Weather\Controller;
 
 use App\Weather\DTO\WeatherDTO;
 use App\Weather\Service\WeatherService;
-use App\Weather\Source\OpenWeatherMapSource;
+use App\Weather\Provider\OpenWeatherMapProvider;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -20,13 +20,13 @@ class WeatherController extends AbstractController
     }
 
     #[Route('/{city}', name: 'city')]
-    public function city(string $city, WeatherService $weatherService, OpenWeatherMapSource $source): Response
+    public function city(string $city, WeatherService $weatherService, OpenWeatherMapProvider $provider): Response
     {
         if (!in_array($city, array_map('strtolower', WeatherDTO::AVAILABLE_CITIES))) {
             throw new NotFoundHttpException("Weather for this city not found. This city is unavailable!");
         }
 
-        $weather = $weatherService->getWeatherForCity($city, $source);
+        $weather = $weatherService->getWeatherForCity($city, $provider);
 
         return $this->render('weather/city.html.twig', [
             'weather' => $weather,

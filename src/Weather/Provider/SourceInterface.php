@@ -1,5 +1,5 @@
 <?php
-namespace App\Weather\Source;
+namespace App\Weather\Provider;
 
 use App\Weather\DTO\WeatherDTO;
 

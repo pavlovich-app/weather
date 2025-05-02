@@ -3,7 +3,7 @@
 namespace App\Weather\Service;
 
 use App\Weather\DTO\WeatherDTO;
-use App\Weather\Source\SourceInterface;
+use App\Weather\Provider\SourceInterface;
 
 class WeatherService
 {
@@ -27,13 +27,13 @@ class WeatherService
 
     /**
      * @param string $city
-     * @param SourceInterface $source
+     * @param SourceInterface $provider
      * @return WeatherDTO|null
      * @throws \Psr\Cache\InvalidArgumentException
      */
-    public function getWeatherForCity(string $city, SourceInterface $source): ?WeatherDTO
+    public function getWeatherForCity(string $city, SourceInterface $provider): ?WeatherDTO
     {
-        $cache = $this->cache->get($source->getCacheKey($city));
+        $cache = $this->cache->get($provider->getCacheKey($city));
 
         if (empty($cache)) return null;
         

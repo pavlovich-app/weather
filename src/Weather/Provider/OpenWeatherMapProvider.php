@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Weather\Source;
+namespace App\Weather\Provider;
 
 use App\Weather\DTO\WeatherDTO;
 use Psr\Log\LoggerInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
-class OpenWeatherMapSource implements SourceInterface
+class OpenWeatherMapProvider implements SourceInterface
 {
     const API_URL = 'https://api.openweathermap.org/data/2.5/weather';
 
