@@ -37,6 +37,8 @@ Once started, the application will be available at:
 👉 http://localhost:8000
 or try http://127.0.0.1:8000
 
+![Weather](weather.png)
+
 #☁️ Fetch Weather Data
 
 ###🔄 Fetch for All Cities
