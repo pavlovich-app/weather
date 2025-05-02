@@ -22,7 +22,7 @@ class WeatherController extends AbstractController
     #[Route('/{city}', name: 'city')]
     public function city(string $city, WeatherService $weatherService, OpenWeatherMapSource $source): Response
     {
-        if (!in_array($city, WeatherDTO::AVAILABLE_CITIES)) {
+        if (!in_array($city, array_map('strtolower', WeatherDTO::AVAILABLE_CITIES))) {
             throw new NotFoundHttpException("Weather for this city not found. This city is unavailable!");
         }
 
