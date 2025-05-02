@@ -10,6 +10,9 @@ A simple weather data fetcher built with **Symfony**, running inside **Docker**,
 
 ````BASH
 git clone git@github.com:pavlovich-app/weather.git
+````
+
+````BASH
 cd weather
 ````
 
