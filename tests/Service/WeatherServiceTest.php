@@ -3,7 +3,7 @@
 namespace App\Tests\Service;
 
 use App\Weather\DTO\WeatherDTO;
-use App\Weather\Provider\SourceInterface;
+use App\Weather\Provider\ProviderInterface;
 use App\Weather\Service\CacheService;
 use App\Weather\Service\WeatherService;
 use PHPUnit\Framework\TestCase;
@@ -17,7 +17,7 @@ class WeatherServiceTest extends TestCase
     {
         $mockDTO = $this->createMock(WeatherDTO::class);
 
-        $mockSource = $this->createMock(SourceInterface::class);
+        $mockSource = $this->createMock(ProviderInterface::class);
         $mockSource->expects($this->once())
             ->method('getWeather')
             ->with('London')
@@ -40,7 +40,7 @@ class WeatherServiceTest extends TestCase
         $mockCache = $this->createMock(CacheService::class);
         $mockCache->method('get')->willReturn(null);
 
-        $mockSource = $this->createMock(SourceInterface::class);
+        $mockSource = $this->createMock(ProviderInterface::class);
         $mockSource->method('getCacheKey')->willReturn('key');
 
         $service = new WeatherService($mockCache);
@@ -70,7 +70,7 @@ class WeatherServiceTest extends TestCase
         $mockCache = $this->createMock(CacheService::class);
         $mockCache->method('get')->willReturn($expectedArray);
 
-        $mockSource = $this->createMock(SourceInterface::class);
+        $mockSource = $this->createMock(ProviderInterface::class);
         $mockSource->method('getCacheKey')->willReturn('key');
 
         $service = new WeatherService($mockCache);

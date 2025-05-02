@@ -3,7 +3,7 @@ namespace App\Weather\Provider;
 
 use App\Weather\DTO\WeatherDTO;
 
-interface SourceInterface
+interface ProviderInterface
 {
     /**
      * @param string $city
